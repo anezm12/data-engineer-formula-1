@@ -19,3 +19,9 @@ Storage Account Project:
 
 
 ## Azure DataBricks
+
+Compute Summary
+
+![databricks compute](https://github.com/anezm12/data-engineer-formula-1/assets/101163640/fba87133-78bb-46ab-ae69-c9dbac3d22bb)
+
+You can check all the notebooks in the databricks folder 
