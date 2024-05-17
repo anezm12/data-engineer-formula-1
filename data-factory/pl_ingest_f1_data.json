@@ -1,0 +1,319 @@
+{
+    "name": "pl_ingest_f1_data",
+    "properties": {
+        "activities": [
+            {
+                "name": "Get Folder Details",
+                "type": "GetMetadata",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataset": {
+                        "referenceName": "ds_f1_raw_incremental",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "p_window_end_date": {
+                                "value": "@pipeline().parameters.p_window_end_date",
+                                "type": "Expression"
+                            }
+                        }
+                    },
+                    "fieldList": [
+                        "exists"
+                    ],
+                    "storeSettings": {
+                        "type": "AzureBlobFSReadSettings",
+                        "recursive": true,
+                        "enablePartitionDiscovery": false
+                    },
+                    "formatSettings": {
+                        "type": "JsonReadSettings"
+                    }
+                }
+            },
+            {
+                "name": "If Folder Exists",
+                "type": "IfCondition",
+                "dependsOn": [
+                    {
+                        "activity": "Get Folder Details",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "userProperties": [],
+                "typeProperties": {
+                    "expression": {
+                        "value": "@activity('Get Folder Details').output.exists",
+                        "type": "Expression"
+                    },
+                    "ifTrueActivities": [
+                        {
+                            "name": "Ingest Circuits File",
+                            "type": "DatabricksNotebook",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "notebookPath": "/Formula1/incremental_load_delta/1.ingest_circuits_file_il_delta",
+                                "baseParameters": {
+                                    "p_data_source": {
+                                        "value": "@variables('v_data_source')",
+                                        "type": "Expression"
+                                    },
+                                    "p_file_date": {
+                                        "value": "@formatDateTime(pipeline().parameters.p_window_end_date, 'yyyy-MM-dd')",
+                                        "type": "Expression"
+                                    }
+                                }
+                            },
+                            "linkedServiceName": {
+                                "referenceName": "ls_databricks_coruse_ws",
+                                "type": "LinkedServiceReference"
+                            }
+                        },
+                        {
+                            "name": "Ingest Races_File",
+                            "type": "DatabricksNotebook",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "notebookPath": "/Formula1/incremental_load_delta/2.ingest_races_files_delta",
+                                "baseParameters": {
+                                    "p_data_source": {
+                                        "value": "@variables('v_data_source')",
+                                        "type": "Expression"
+                                    },
+                                    "p_file_date": {
+                                        "value": "@formatDateTime(pipeline().parameters.p_window_end_date, 'yyyy-MM-dd')",
+                                        "type": "Expression"
+                                    }
+                                }
+                            },
+                            "linkedServiceName": {
+                                "referenceName": "ls_databricks_coruse_ws",
+                                "type": "LinkedServiceReference"
+                            }
+                        },
+                        {
+                            "name": "Ingest Constructor File",
+                            "type": "DatabricksNotebook",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "notebookPath": "/Formula1/incremental_load_delta/3.ingest_constructors_json_file_delta",
+                                "baseParameters": {
+                                    "p_data_source": {
+                                        "value": "@variables('v_data_source')",
+                                        "type": "Expression"
+                                    },
+                                    "p_file_date": {
+                                        "value": "@formatDateTime(pipeline().parameters.p_window_end_date, 'yyyy-MM-dd')",
+                                        "type": "Expression"
+                                    }
+                                }
+                            },
+                            "linkedServiceName": {
+                                "referenceName": "ls_databricks_coruse_ws",
+                                "type": "LinkedServiceReference"
+                            }
+                        },
+                        {
+                            "name": "Ingest Drivers File",
+                            "type": "DatabricksNotebook",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "notebookPath": "/Formula1/incremental_load_delta/4.ingest_drivers_file_json_nestedjson_delta",
+                                "baseParameters": {
+                                    "p_data_source": {
+                                        "value": "@variables('v_data_source')",
+                                        "type": "Expression"
+                                    },
+                                    "p_file_date": {
+                                        "value": "@formatDateTime(pipeline().parameters.p_window_end_date, 'yyyy-MM-dd')",
+                                        "type": "Expression"
+                                    }
+                                }
+                            },
+                            "linkedServiceName": {
+                                "referenceName": "ls_databricks_coruse_ws",
+                                "type": "LinkedServiceReference"
+                            }
+                        },
+                        {
+                            "name": "Ingest Results File",
+                            "type": "DatabricksNotebook",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "notebookPath": "/Formula1/incremental_load_delta/5b.ingest_results_file_json_single_line_delta",
+                                "baseParameters": {
+                                    "p_data_source": {
+                                        "value": "@variables('v_data_source')",
+                                        "type": "Expression"
+                                    },
+                                    "p_file_date": {
+                                        "value": "@formatDateTime(pipeline().parameters.p_window_end_date, 'yyyy-MM-dd')",
+                                        "type": "Expression"
+                                    }
+                                }
+                            },
+                            "linkedServiceName": {
+                                "referenceName": "ls_databricks_coruse_ws",
+                                "type": "LinkedServiceReference"
+                            }
+                        },
+                        {
+                            "name": "Ingest Pit_stops File",
+                            "type": "DatabricksNotebook",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "notebookPath": "/Formula1/incremental_load_delta/6b.ingest_pit_stops_file_delta",
+                                "baseParameters": {
+                                    "p_data_source": {
+                                        "value": "@variables('v_data_source')",
+                                        "type": "Expression"
+                                    },
+                                    "p_file_date": {
+                                        "value": "@formatDateTime(pipeline().parameters.p_window_end_date, 'yyyy-MM-dd')",
+                                        "type": "Expression"
+                                    }
+                                }
+                            },
+                            "linkedServiceName": {
+                                "referenceName": "ls_databricks_coruse_ws",
+                                "type": "LinkedServiceReference"
+                            }
+                        },
+                        {
+                            "name": "Ingest Lap_times File",
+                            "type": "DatabricksNotebook",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "notebookPath": "/Formula1/incremental_load_delta/7b.ingest_lap_times_delta",
+                                "baseParameters": {
+                                    "p_data_source": {
+                                        "value": "@variables('v_data_source')",
+                                        "type": "Expression"
+                                    },
+                                    "p_file_date": {
+                                        "value": "@formatDateTime(pipeline().parameters.p_window_end_date, 'yyyy-MM-dd')",
+                                        "type": "Expression"
+                                    }
+                                }
+                            },
+                            "linkedServiceName": {
+                                "referenceName": "ls_databricks_coruse_ws",
+                                "type": "LinkedServiceReference"
+                            }
+                        },
+                        {
+                            "name": "Ingest Qualifying File",
+                            "type": "DatabricksNotebook",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "notebookPath": "/Formula1/incremental_load_delta/8b.ingest_qualifying_delta",
+                                "baseParameters": {
+                                    "p_data_source": {
+                                        "value": "@variables('v_data_source')",
+                                        "type": "Expression"
+                                    },
+                                    "p_file_date": {
+                                        "value": "@formatDateTime(pipeline().parameters.p_window_end_date, 'yyyy-MM-dd')",
+                                        "type": "Expression"
+                                    }
+                                }
+                            },
+                            "linkedServiceName": {
+                                "referenceName": "ls_databricks_coruse_ws",
+                                "type": "LinkedServiceReference"
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "concurrency": 1,
+        "parameters": {
+            "p_window_end_date": {
+                "type": "string"
+            }
+        },
+        "variables": {
+            "v_data_source": {
+                "type": "String",
+                "defaultValue": "Ergast"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2024-05-07T02:55:37Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
