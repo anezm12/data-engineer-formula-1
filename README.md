@@ -35,4 +35,25 @@ You can check all the notebooks in the databricks folder.
   <li><b>analysis</b>, Finally, these SQL notebooks analyze the previously created tables to identify the most dominant driver and team. </li>
 </ul>
 
+## Azure Data Factory
+
+Ingest Pipeline
+
+![data factory 1](https://github.com/anezm12/data-engineer-formula-1/assets/101163640/53bf2610-371a-4933-9f5c-382eb88edfca)
+
+Transformation Pipeline
+
+![data factory 2](https://github.com/anezm12/data-engineer-formula-1/assets/101163640/c920800a-d502-4883-b250-382c6cfb826c)
+
+Process Pipeline
+
+![data factory 3](https://github.com/anezm12/data-engineer-formula-1/assets/101163640/a1dc032b-86d5-4edc-a6a4-44a08f23163a)
+
+Trigger
+
+![trigger](https://github.com/anezm12/data-engineer-formula-1/assets/101163640/48ccd039-4a02-4206-8578-ae8fd7fe9327)
+
+Results
+
+![pipeline runs](https://github.com/anezm12/data-engineer-formula-1/assets/101163640/fd4ba4f5-5b0b-440a-8802-799c46aba03f)
 
