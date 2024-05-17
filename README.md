@@ -28,7 +28,7 @@ You can check all the notebooks in the databricks folder.
 
 
 <ul>
-  <li>Includes, here you can find two notebooks the configuration one has all the paths for the containers used during the project. Common_functions where are the functions used on other notebooks.</li>
+  <li> <b>Includes</b>, here you can find two notebooks the configuration one has all the paths for the containers used during the project. Common_functions where are the functions used on other notebooks.</li>
   <li>Tea</li>
   <li>Milk</li>
 </ul>
