@@ -34,3 +34,5 @@ You can check all the notebooks in the databricks folder.
   <li><b>trans_inc_load_delta</b>, these notebooks handle the transformations needed to generate the race results, drivers, and constructors' standings. </li>
   <li><b>analysis</b>, Finally, these SQL notebooks analyze the previously created tables to identify the most dominant driver and team. </li>
 </ul>
+
+
