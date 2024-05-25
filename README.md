@@ -2,6 +2,9 @@
 
 ![formula1](https://github.com/anezm12/data-engineer-formula-1/assets/101163640/73d33416-5c71-430d-83c8-420f3a596ca1)
 
+## Overview
+
+I created and managed notebooks, dashboards, clusters, and jobs in Azure Databricks, and used PySpark and Spark SQL for data ingestion, transformation, and analysis. Additionally, I explored Data Lake and Lakehouse architectures, implemented Lakehouse architecture with Delta Lake, and created and managed ADF pipelines and triggers to automate and monitor workflows.
 
 ## Azure Data Lake
 
